@@ -6,8 +6,9 @@ on:
 
 jobs:
   check:
-    # The repo owner (teacher) may change anything.
-    if: github.event.pull_request.user.login != github.repository_owner
+    # The repo owner and collaborators (teacher accounts) may change anything.
+    # Students open PRs from forks, so they are always checked.
+    if: ${{ !contains(fromJSON('["OWNER", "COLLABORATOR", "MEMBER"]'), github.event.pull_request.author_association) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
