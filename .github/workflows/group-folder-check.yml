@@ -1,0 +1,41 @@
+name: Group folder check
+
+# Fails a student PR if it touches anything outside a single groups/groupN/ folder.
+on:
+  pull_request:
+
+jobs:
+  check:
+    # The repo owner (teacher) may change anything.
+    if: github.event.pull_request.user.login != github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Only one group folder changed
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          files=$(git diff --name-only "$BASE"..."$HEAD")
+          echo "Changed files:"
+          echo "$files"
+          echo
+
+          outside=$(echo "$files" | grep -vE '^groups/group[0-9]+/' || true)
+          folders=$(echo "$files" | grep -oE '^groups/group[0-9]+/' | sort -u || true)
+          count=$(echo "$folders" | grep -c . || true)
+
+          if [ -n "$outside" ]; then
+            echo "::error::Please only change files in your own group folder. These files are outside it:"
+            echo "$outside"
+            exit 1
+          fi
+          if [ "$count" -gt 1 ]; then
+            echo "::error::Please only change files in your own group folder. This PR touches several groups:"
+            echo "$folders"
+            exit 1
+          fi
+          echo "✅ All changes are inside $folders"

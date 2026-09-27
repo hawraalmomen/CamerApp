@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "CamerApp",
-    "slug": "CamerApp",
+    "name": "Fun Camera",
+    "slug": "fun-camera",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,6 +19,23 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Fun Camera uses the camera to take fun photos in class.",
+          "recordAudioAndroid": false
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Fun Camera lets you pick a photo from your gallery when no camera is available."
+        }
+      ]
+    ],
+    "scheme": "funcamera"
   }
 }
