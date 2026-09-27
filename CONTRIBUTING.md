@@ -5,8 +5,8 @@ Welcome! Your group builds **one camera screen** with a fun twist. Everything el
 ## 1. Setup (5 minutes)
 
 ```bash
-git clone <repo-url>
-cd <repo-folder>
+git clone https://github.com/joneikholmkea/CamerApp.git
+cd CamerApp
 npm install
 npx expo start
 ```
