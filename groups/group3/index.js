@@ -40,11 +40,31 @@ export default function CameraScreen() {
   // The camera needs a moment to start. We can't take a photo before it's ready.
   const [isCameraReady, setIsCameraReady] = useState(false);
 
+  const [countdown, setCountdown] = useState(null)
+
   // Take a photo and remember where it was saved.
   async function takePhoto() {
     if (!cameraRef.current || !isCameraReady) return;
     const photo = await cameraRef.current.takePictureAsync({ quality: 0.5 });
     setPhotoUri(photo.uri);
+
+    setCountdown(3);
+
+    setTimeout(() => {
+      setCountdown(2)
+
+      setTimeout(() => {
+        setCountdown(1)
+
+        setTimeout(() => {
+          takePictureAsync()
+
+        }, 1000 )
+
+      }, 1000)
+
+    }, 1000)
+    
   }
 
   // No camera (e.g. simulator)? Pick a photo from the gallery instead.
