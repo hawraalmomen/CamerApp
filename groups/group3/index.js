@@ -45,8 +45,6 @@ export default function CameraScreen() {
   // Take a photo and remember where it was saved.
   async function takePhoto() {
     if (!cameraRef.current || !isCameraReady) return;
-    const photo = await cameraRef.current.takePictureAsync({ quality: 0.5 });
-    setPhotoUri(photo.uri);
 
     setCountdown(3);
 
@@ -56,8 +54,9 @@ export default function CameraScreen() {
       setTimeout(() => {
         setCountdown(1)
 
-        setTimeout(() => {
-          takePictureAsync()
+        setTimeout(async() => {
+          const photo = await cameraRef.current.takePictureAsync({ quality: 0.5 });
+          setPhotoUri(photo.uri);
 
         }, 1000 )
 
